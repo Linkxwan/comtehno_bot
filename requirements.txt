@@ -1,3 +1,4 @@
+python==3.11
 aiocache==0.12.2
 aiofiles==23.2.1
 aiohttp==3.9.3
@@ -45,7 +46,6 @@ pyngrok==7.1.0
 pypiwin32==223
 python-dotenv==1.0.1
 python-multipart==0.0.6
-pywin32==306
 PyYAML==6.0.1
 requests==2.31.0
 scikit-learn==1.4.0
