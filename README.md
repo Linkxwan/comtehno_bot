@@ -5,3 +5,7 @@
 ```
 pip install -r requirements.txt
 ```
+# ссылка на проект с бесплатным сервером
+```
+https://comtehno-bot.onrender.com/
+```
