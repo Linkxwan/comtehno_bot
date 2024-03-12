@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ассистент комтехно</title>
+</head>
+<body>
+    <!-- навигационная панель -->
+    <div class="navbar">
+        <h3>Виртуальный ассистент комтехно</h3>
+        <button type="button" id="clear-history">Очистить историю</button>
+    </div>
+    <!-- контент -->
+    <div class="content">
+        <div class="chat-message">
+            <div class="user-avatar">
+                <img src="static\chatgpt-icon.png" alt="Avatar">
+            </div>
+            <div class="user-info">
+                <div class="user-name font-semibold">Ассистент комтехно</div>
+                <div class="message-content">Здраствуйте! Чем я могу помочь вам сегодня?</div>
+            </div>
+        </div>
+        {% for message in chat_history %}
+            {% if message.user == "you" %}
+                <div class="chat-message-user">
+                    <div class="user-info-user">
+                        <div class="user-name-user font-semibold">Вы</div>
+                        <div class="message-content" id="user-message">{{ message.message }}</div>
+                    </div>
+                    <div class="user-avatar">
+                        <img src="static\user.png" alt="Avatar">
+                    </div>
+                </div>
+            {% else %}
+                <div class="chat-message">
+                    <div class="user-avatar">
+                        <img src="static\chatgpt-icon.png" alt="Avatar">
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name font-semibold">Ассистент комтехно</div>
+                        <div class="message-content" id="assistant-message">{{ message.message }}</div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <!-- строка для вопросов -->
+        <form action="/api" method="post" autocomplete="off" onsubmit="return validateForm()">
+            <div class="chat-input">
+                <input name="question" id="question-input" type="text" placeholder="Сообщение боту…" style="overflow-y: hidden;">
+                <input type="hidden" name="dummy" value="placeholder">
+                <button name="button" class="send-button">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#232323">
+                        <path d="M7 11L12 6L17 11M12 18V7" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+                <!-- <button type="button" id="clear-history">Очистить историю</button> -->
+            </div>
+        </form>
+    </div>
+    <style>
+        body {
+            background-color: #232323;
+            color: #f2f2f2;
+            font-size: medium;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            margin-bottom: 100px;
+        }
+        form {
+            all: initial;
+        }
+        .content {
+            max-width: 600px;
+            margin: 0 auto;
+            margin-top: 100px;
+        }
+
+        .chat-message {
+            display: flex;
+            margin-bottom: 10px;
+            margin-top: 40px;
+        }
+        .chat-message-user {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        .user-avatar img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+        .user-info-user {
+            margin-right: 15px;
+            margin-top: -5px;
+            line-height: 1.8;
+        }
+
+        .user-info {
+            margin-left: 15px;
+            margin-top: -5px;
+            line-height: 1.8;
+        }
+        .user-name-user {
+            text-align: end;
+        }
+        .user-name {
+            font-weight: bold;
+        }
+
+        .chat-input {
+            display: flex;
+            border: 1px solid gray;
+            border-radius: 10px;
+            padding: 5px;
+            position: fixed;
+            bottom: 20px;
+            max-width: 720px;
+            width: 100%;
+            background-color: #232323;
+        }
+
+        .chat-input input {
+            font-size: medium;
+            border: none;
+            outline: none;
+            color: #f2f2f2;
+            flex-grow: 1;
+            margin-right: 10px;
+            margin-left: 5px;
+            background-color: #232323;
+            
+        }
+
+        .send-button svg {
+            width: 30px;
+            fill: #232323;
+        }
+
+        .send-button {
+            background-color: #444444;
+            color: white;
+            border: none;
+            padding: 0.5em 0.5em 0.3em 0.5em;
+            border-radius: 0.6em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .send-button:hover {background-color: darkslategray;}
+        .send-button:focus {background-color: #666666;}
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            margin: 0 auto;
+            width: 100%; /* Ширина шторки */
+            height: 70px;
+            background-color: darkslategray; /* Цвет фона шторки */
+            z-index: 1000; /* Установка z-index, чтобы шторка оказалась поверх контента */
+            
+        }
+
+        .navbar h3 {
+            margin-left: 30px;
+            margin-top: 25px;
+        }
+        .navbar button {
+            margin: auto;
+            width: 100px;
+            height: 40px;
+            margin-right: 30px;
+            
+        }
+
+        /* Простая настройка цвета */
+        ::-webkit-scrollbar {
+            width: 10px; /* Ширина полосы прокрутки */
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background-color: darkslategray; /* Цвет полосы прокрутки */
+            border-radius: 20px; /* Скругление углов полосы прокрутки */
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #444; /* Цвет полосы прокрутки при наведении */
+        }
+    </style>
+    <!-- Воспроизведение MP3 файла -->
+    <!-- <script>
+        const audioPlayer = document.getElementById('audio-player');
+        const playBtn = document.getElementById('play-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+    
+        playBtn.addEventListener('click', () => {
+            audioPlayer.play();
+        });
+    
+        pauseBtn.addEventListener('click', () => {
+            audioPlayer.pause();
+        });
+    </script> -->
+    <script>
+        window.onload = function() {
+            window.scrollTo(0, document.body.scrollHeight);
+        };
+        function validateForm() {
+            var questionInput = document.getElementById("question-input").value;
+            if (questionInput.trim() === "") {
+                return false;
+            }
+            return true;
+        }
+        document.getElementById("clear-history").addEventListener("click", function() {
+            fetch("/clear_history")
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        console.error("Ошибка при очистке истории чата");
+                    }
+                });
+        });
+        // Функция для добавления эффекта появления текста по буквам
+        function typeMessage(element) {
+            var message = element.textContent;
+            element.textContent = ''; // Очищаем содержимое элемента
+            var index = 0;
+            var typingInterval = setInterval(function() {
+                if (index < message.length) {
+                    element.textContent += message.charAt(index);
+                    index++;
+                } else {
+                    clearInterval(typingInterval);
+                }
+            }, 10); // Задержка между появлением букв (в миллисекундах)
+        }
+
+        // Получаем последний элемент с классом "message-content" и вызываем функцию для добавления эффекта появления по буквам
+        var messageContentElements = document.querySelectorAll('.message-content');
+        var lastMessageElement = messageContentElements[messageContentElements.length - 1];
+        if (lastMessageElement) {
+            typeMessage(lastMessageElement);
+        }
+    </script>
+    
+</body>
+</html>
