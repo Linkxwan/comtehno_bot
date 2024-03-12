@@ -42,7 +42,6 @@ pydantic-settings==2.1.0
 pydantic_core==2.16.1
 pygame==2.5.2
 pyngrok==7.1.0
-pypiwin32==223
 python-dotenv==1.0.1
 python-multipart==0.0.6
 PyYAML==6.0.1
